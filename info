@@ -1,0 +1,54 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+def compactAndSort(rs):
+    if rs.replace(' ','')=="":
+        return ""
+           
+    def fdata(string):
+        filteredarray =  string.replace(' ','').split(',')
+        out = [[int(entry.split(':')[0]), int(entry.split(':')[1])] for entry in filteredarray]
+        return out
+            
+    try:
+        ndata = fdata(rs)
+        ndata.sort()
+        
+        ts = []
+        ts.append(ndata[0])
+        for cindex in range(1, len(ndata)):
+            top = ts[-1]
+            if int(top[1])+1>=int(ndata[cindex][0]):
+                ts[-1][1] = max(int(top[1]), ndata[cindex][1])
+                
+            else:
+                ts.append(ndata[cindex])
+        
+        output = ""
+        for el in ts:
+            output += ":".join(map(str, el)) + ','
+                
+        return output[0:len(output)-1]
+    except Exception as e:
+        return ""
+            
+        
+            
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    try:
+        rangestring = input()
+        
+        res = compactAndSort(rangestring)
+
+        fptr.write(res + '\n')
+
+        fptr.close()
+    except Exception as e:
+        print(e)
