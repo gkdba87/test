@@ -10,3 +10,18 @@ JOIN
 ORDER BY
   total_size_mb DESC
 LIMIT 10;
+
+
+SELECT
+  projects.path_with_namespace,
+  ROUND(project_statistics.repository_size / 1024 / 1024, 2) AS repository_size_mb,
+  ROUND(project_statistics.lfs_objects_size / 1024 / 1024, 2) AS lfs_size_mb,
+  ROUND(project_statistics.storage_size / 1024 / 1024, 2) AS total_size_mb
+FROM
+  projects
+JOIN
+  project_statistics ON projects.id = project_statistics.project_id
+ORDER BY
+  total_size_mb DESC
+LIMIT 10;
+
